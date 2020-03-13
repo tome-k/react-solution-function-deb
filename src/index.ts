@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 
-export type ChangeEvent =
+export type InputEvent =
   React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
 
-export type ChangeEventHandler = (ev: ChangeEvent) => void;
+export type InputEventHandler = (ev: InputEvent) => void;
 
 export type DebouncedCallback = (
   value: string,
@@ -12,7 +12,7 @@ export type DebouncedCallback = (
 
 export type InputDebounceOptions = {
   delay?: number;
-  handleChange?: (ev: ChangeEvent) => void | Promise<void>;
+  handleInput?: (ev: InputEvent) => void | Promise<void>;
   initialValue?: string;
   trim?: boolean;
   requireUnique?: boolean;
@@ -25,7 +25,7 @@ export const useInputDebounce = (
   debouncedCallback: DebouncedCallback,
   {
     delay = defaultDelay,
-    handleChange,
+    handleInput,
     initialValue = '',
     trim = true,
     requireUnique = false,
@@ -33,7 +33,7 @@ export const useInputDebounce = (
   }: InputDebounceOptions = {} as InputDebounceOptions,
 ): [
   string,
-  ChangeEventHandler,
+  InputEventHandler,
   boolean,
   React.Dispatch<React.SetStateAction<string>>,
 ] => {
@@ -42,14 +42,14 @@ export const useInputDebounce = (
   const previousValueRef = useRef(initialValue);
   const timerIdRef = useRef(0);
 
-  const onChange: ChangeEventHandler = useCallback(ev => {
+  const onInput: InputEventHandler = useCallback(ev => {
     setIsChanging(true);
     const {target: {value: rawValue}} = ev;
     const value = trim ? rawValue.trim() : rawValue;
     setValue(rawValue);
-    if (typeof handleChange === 'function') {
+    if (typeof handleInput === 'function') {
       ev.persist();
-      handleChange(ev);
+      handleInput(ev);
     }
     if (typeof debouncedCallback === 'function') {
       clearTimeout(timerIdRef.current);
@@ -65,7 +65,7 @@ export const useInputDebounce = (
   }, [
     debouncedCallback,
     delay,
-    handleChange,
+    handleInput,
     requireUnique,
     requireValue,
     trim,
@@ -73,7 +73,7 @@ export const useInputDebounce = (
 
   useEffect(() => (): void => clearTimeout(timerIdRef.current), []);
 
-  return [value, onChange, isChanging, setValue];
+  return [value, onInput, isChanging, setValue];
 };
 
 export default useInputDebounce;
