@@ -6,8 +6,8 @@ export type ChangeEvent =
 type ChangeEventHandler = (ev: ChangeEvent) => void;
 
 type DebouncedCallback = (
-  value?: string,
-  setValue?: React.Dispatch<React.SetStateAction<string>>,
+  value: string,
+  setValue: React.Dispatch<React.SetStateAction<string>>,
 ) => void | Promise<void>;
 
 export type InputDebounceOptions = {
