@@ -3,9 +3,9 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 export type ChangeEvent =
   React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
 
-type ChangeEventHandler = (ev: ChangeEvent) => void;
+export type ChangeEventHandler = (ev: ChangeEvent) => void;
 
-type DebouncedCallback = (
+export type DebouncedCallback = (
   value: string,
   setValue: React.Dispatch<React.SetStateAction<string>>,
 ) => void | Promise<void>;
