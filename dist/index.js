@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 const defaultDelay = 800;
-export const useInputDebounce = (debouncedCallback, { delay = defaultDelay, handleChange, initialValue = '', trim = true, requireUnique = false, requireValue = false, } = {}) => {
+export const useInputDebounce = (debouncedCallback, { delay = defaultDelay, handleInput, initialValue = '', trim = true, requireUnique = false, requireValue = false, } = {}) => {
     const [isChanging, setIsChanging] = useState(false);
     const [value, setValue] = useState(initialValue);
     const previousValueRef = useRef(initialValue);
     const timerIdRef = useRef(0);
-    const onChange = useCallback(ev => {
+    const onInput = useCallback(ev => {
         setIsChanging(true);
         const { target: { value: rawValue } } = ev;
         const value = trim ? rawValue.trim() : rawValue;
         setValue(rawValue);
-        if (typeof handleChange === 'function') {
+        if (typeof handleInput === 'function') {
             ev.persist();
-            handleChange(ev);
+            handleInput(ev);
         }
         if (typeof debouncedCallback === 'function') {
             clearTimeout(timerIdRef.current);
@@ -28,12 +28,12 @@ export const useInputDebounce = (debouncedCallback, { delay = defaultDelay, hand
     }, [
         debouncedCallback,
         delay,
-        handleChange,
+        handleInput,
         requireUnique,
         requireValue,
         trim,
     ]);
     useEffect(() => () => clearTimeout(timerIdRef.current), []);
-    return [value, onChange, isChanging, setValue];
+    return [value, onInput, isChanging, setValue];
 };
 export default useInputDebounce;
