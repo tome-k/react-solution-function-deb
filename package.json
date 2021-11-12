@@ -11,22 +11,12 @@
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jsejcksn/react-use-input-debounce.git"
-  },
   "keywords": [
     "react",
     "input",
     "debounce",
     "delay"
   ],
-  "author": "Jesse Jackson <npm@jcksn.org> (https://jcksn.org)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jsejcksn/react-use-input-debounce/issues"
-  },
-  "homepage": "https://github.com/jsejcksn/react-use-input-debounce#readme",
   "devDependencies": {
     "@jsejcksn/eslint-config": "^3.1.0",
     "@types/react": "^16.9.25",
